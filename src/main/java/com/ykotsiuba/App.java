@@ -1,6 +1,9 @@
 package com.ykotsiuba;
 
 import com.ykotsiuba.entity.Article;
+import com.ykotsiuba.service.ReadArticleServiceImpl;
+
+import java.util.List;
 
 /**
  * Hello world!
@@ -8,8 +11,10 @@ import com.ykotsiuba.entity.Article;
  */
 public class App {
     public static void main( String[] args ) {
-        Article article = new Article();
+        ReadArticleServiceImpl service = new ReadArticleServiceImpl();
 
-        System.out.println( "Hello World!" );
+        List<Article> read = service.read("D:\\1.json");
+
+        System.out.println( read);
     }
 }
