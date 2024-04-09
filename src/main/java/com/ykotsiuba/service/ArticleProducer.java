@@ -2,29 +2,31 @@ package com.ykotsiuba.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ykotsiuba.entity.Article;
+import com.ykotsiuba.entity.ArticleQueue;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
-public class ReadArticleServiceImpl {
+public class ArticleProducer {
 
-    public List<Article> read(String fileName) {
+    private final ArticleQueue articles;
+
+    public ArticleProducer(ArticleQueue articles) {
+        this.articles = articles;
+    }
+
+    public void read(String fileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            List<Article> articles = readJsonList(reader);
-            return articles;
+            readJsonList(reader);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-    private List<Article> readJsonList(BufferedReader reader) throws IOException {
+    private void readJsonList(BufferedReader reader) throws IOException {
         int nextChar;
-        List<Article> articles = new ArrayList<>();
         while ((nextChar = reader.read()) != -1) {
             char charRead = (char) nextChar;
             if (Character.isWhitespace(charRead)) {
@@ -34,16 +36,15 @@ public class ReadArticleServiceImpl {
                 break;
             }
             Article article = readJsonObject(reader);
-            articles.add(article);
+            articles.putArticle(article);
         }
-        return articles;
     }
 
     private Article readJsonObject(BufferedReader reader) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         StringBuilder jsonBuilder = new StringBuilder();
-        boolean inObject = false; // Flag to track whether we are inside a JSON object
-        int braceCount = 0; // Counter for open and closing braces
+        boolean inObject = false;
+        int braceCount = 0;
 
         int nextChar;
         while ((nextChar = reader.read()) != -1) {

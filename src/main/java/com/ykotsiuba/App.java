@@ -1,9 +1,7 @@
 package com.ykotsiuba;
 
-import com.ykotsiuba.entity.Article;
-import com.ykotsiuba.service.ReadArticleServiceImpl;
-
-import java.util.List;
+import com.ykotsiuba.service.ArticleProducer;
+import com.ykotsiuba.service.ParallelExecutorService;
 
 /**
  * Hello world!
@@ -11,10 +9,7 @@ import java.util.List;
  */
 public class App {
     public static void main( String[] args ) {
-        ReadArticleServiceImpl service = new ReadArticleServiceImpl();
-
-        List<Article> read = service.read("D:\\1.json");
-
-        System.out.println( read);
+        ParallelExecutorService service = new ParallelExecutorService();
+        service.run();
     }
 }
