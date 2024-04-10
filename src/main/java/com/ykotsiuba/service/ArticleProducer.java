@@ -1,74 +1,47 @@
 package com.ykotsiuba.service;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.util.JsonParserDelegate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ykotsiuba.entity.Article;
 import com.ykotsiuba.entity.ArticleQueue;
+import com.ykotsiuba.entity.ConcurrentParameterMap;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.concurrent.BlockingQueue;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArticleProducer {
 
-    private final ArticleQueue articles;
+    private final ConcurrentParameterMap parameters;
 
-    public ArticleProducer(ArticleQueue articles) {
-        this.articles = articles;
+    public ArticleProducer(ConcurrentParameterMap parameters) {
+        this.parameters = parameters;
     }
 
     public void read(String fileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            readJsonList(reader);
+            JsonFactory jFactory = new JsonFactory();
+            JsonParser jParser = jFactory.createParser(reader);
+            readJsonList(jParser);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void readJsonList(BufferedReader reader) throws IOException {
-        int nextChar;
-        while ((nextChar = reader.read()) != -1) {
-            char charRead = (char) nextChar;
-            if (Character.isWhitespace(charRead)) {
-                continue;
-            }
-            if (charRead == ']') {
-                break;
-            }
-            Article article = readJsonObject(reader);
-            articles.putArticle(article);
-        }
-    }
-
-    private Article readJsonObject(BufferedReader reader) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        StringBuilder jsonBuilder = new StringBuilder();
-        boolean inObject = false;
-        int braceCount = 0;
-
-        int nextChar;
-        while ((nextChar = reader.read()) != -1) {
-            char charRead = (char) nextChar;
-
-            if (inObject) {
-                jsonBuilder.append(charRead);
-                if (charRead == '{') {
-                    braceCount++;
-                } else if (charRead == '}') {
-                    braceCount--;
-                    if (braceCount == 0) {
-                        break;
-                    }
-                }
-            } else if (charRead == '{') {
-                inObject = true;
-                jsonBuilder.append(charRead);
-                braceCount++;
+    private void readJsonList(JsonParser jParser) throws IOException {
+        while (jParser.nextToken() != JsonToken.END_ARRAY) {
+            String fieldname = jParser.getCurrentName();
+            if ("author".equals(fieldname)) {
+                jParser.nextToken();
+                String parsedName = jParser.getText();
+                parameters.add(parsedName);
             }
         }
-
-        String json = jsonBuilder.toString();
-        Article article = mapper.readValue(json, Article.class);
-        return article;
+        jParser.close();
     }
 }

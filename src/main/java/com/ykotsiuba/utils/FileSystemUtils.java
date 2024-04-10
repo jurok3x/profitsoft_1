@@ -20,7 +20,7 @@ public class FileSystemUtils {
             if (files != null) {
                 for (File file : files) {
                     if (file.isFile() && file.getName().toLowerCase().endsWith(EXTENSION)) {
-                        jsonFiles.add(file.getName());
+                        jsonFiles.add(file.getAbsolutePath());
                     }
                 }
             }
