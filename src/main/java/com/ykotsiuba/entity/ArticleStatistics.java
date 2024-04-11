@@ -1,21 +1,22 @@
 package com.ykotsiuba.entity;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArticleStatistics {
 
-    private Map<String, Integer> statistics;
+    @JacksonXmlElementWrapper(localName = "statistics")
+    @JacksonXmlProperty(localName = "item")
+    private List<StatisticsItem> statistics;
 
     public ArticleStatistics() {
-        this.statistics = new HashMap<>();
+        this.statistics = new ArrayList<>();
     }
 
-    public void add(String parameter) {
-        statistics.compute(parameter, (key, value) -> (value == null) ? 1 : value + 1);
-    }
-
-    public Map<String, Integer> getStatistics() {
-        return statistics;
+    public void add(StatisticsItem item) {
+        statistics.add(item);
     }
 }
