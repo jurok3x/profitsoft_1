@@ -1,5 +1,6 @@
 package com.ykotsiuba;
 
+import com.ykotsiuba.entity.RuntimeParameters;
 import com.ykotsiuba.service.ArticleProducer;
 import com.ykotsiuba.service.ParallelExecutorService;
 
@@ -9,7 +10,8 @@ import com.ykotsiuba.service.ParallelExecutorService;
  */
 public class App {
     public static void main( String[] args ) {
-        ParallelExecutorService service = new ParallelExecutorService();
+        RuntimeParameters parameters = new RuntimeParameters(args);
+        ParallelExecutorService service = new ParallelExecutorService(parameters);
         service.run();
     }
 }
