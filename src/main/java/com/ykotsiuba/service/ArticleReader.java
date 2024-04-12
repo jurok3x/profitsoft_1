@@ -4,37 +4,32 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.ykotsiuba.entity.ConcurrentParameterMap;
-import com.ykotsiuba.entity.RuntimeParameters;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ArticleProducer {
+public class ArticleReader {
 
     private final ConcurrentParameterMap parameterMap;
 
-    private final RuntimeParameters parameters;
-
-    public ArticleProducer(ConcurrentParameterMap parameterMap, RuntimeParameters parameters) {
+    public ArticleReader(ConcurrentParameterMap parameterMap) {
         this.parameterMap = parameterMap;
-        this.parameters = parameters;
     }
 
-    public void read(String fileName) {
+    public void read(String fileName, String parameter) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             JsonFactory jFactory = new JsonFactory();
             JsonParser jParser = jFactory.createParser(reader);
-            readJsonList(jParser);
+            readJsonList(jParser, parameter);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void readJsonList(JsonParser jParser) throws IOException {
+    private void readJsonList(JsonParser jParser, String parameter) throws IOException {
         while (jParser.nextToken() != JsonToken.END_ARRAY) {
             String fieldname = jParser.getCurrentName();
-            String parameter = parameters.getParameterName();
             if (parameter.equals(fieldname)) {
                 jParser.nextToken();
                 String parsedName = jParser.getText();

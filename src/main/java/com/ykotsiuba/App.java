@@ -1,7 +1,6 @@
 package com.ykotsiuba;
 
 import com.ykotsiuba.entity.RuntimeParameters;
-import com.ykotsiuba.service.ArticleProducer;
 import com.ykotsiuba.service.ParallelExecutorService;
 
 /**
