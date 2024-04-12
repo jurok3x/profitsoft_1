@@ -1,8 +1,6 @@
 package com.ykotsiuba;
 
 import com.ykotsiuba.configuration.TestFilesGenerator;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.junit.Test;
 
 /**
@@ -15,7 +13,7 @@ public class AppTest {
     public void testApp() {
         TestFilesGenerator generator = new TestFilesGenerator();
         for (int i = 0; i < 10; i++) {
-            generator.write(100);
+            generator.generateRandomJson(100);
         }
     }
 }

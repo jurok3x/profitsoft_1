@@ -5,14 +5,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import com.ykotsiuba.entity.Article;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class TestFilesGenerator {
@@ -27,17 +25,32 @@ public class TestFilesGenerator {
         DEFAULT_MAPPER = mapper;
     }
 
-
     private static final int START_YEAR = 1999;
     private static final int END_YEAR = 2024;
-    
-    public void write(int size) {
+
+    public void writeJson(Article ...articles) {
+        try {
+            List<Article> articlesList = Arrays.stream(articles).toList();
+            File outFile = prepareOutFile();
+            DEFAULT_MAPPER.writeValue(outFile, articlesList);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void generateRandomJson(int size) {
         try {
             List<Article> articles = prepareArticles(size);
             File outFile = prepareOutFile();
             DEFAULT_MAPPER.writeValue(outFile, articles);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void generateMultipleRandomJson(int size, int count) {
+        for (int i = 0; i < count; i++) {
+            generateRandomJson(size);
         }
     }
 
