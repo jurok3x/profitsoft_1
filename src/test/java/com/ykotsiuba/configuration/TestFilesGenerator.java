@@ -28,7 +28,7 @@ public class TestFilesGenerator {
     private static final int START_YEAR = 1999;
     private static final int END_YEAR = 2024;
 
-    public void writeJson(Article ...articles) {
+    public static void writeJson(Article ...articles) {
         try {
             List<Article> articlesList = Arrays.stream(articles).toList();
             File outFile = prepareOutFile();
@@ -38,7 +38,7 @@ public class TestFilesGenerator {
         }
     }
 
-    public void generateRandomJson(int size) {
+    public static void generateRandomJson(int size) {
         try {
             List<Article> articles = prepareArticles(size);
             File outFile = prepareOutFile();
@@ -48,13 +48,13 @@ public class TestFilesGenerator {
         }
     }
 
-    public void generateMultipleRandomJson(int size, int count) {
+    public static void generateMultipleRandomJson(int size, int count) {
         for (int i = 0; i < count; i++) {
             generateRandomJson(size);
         }
     }
 
-    public void clean() {
+    public static void clean() {
         try {
             File resourceFolder = new File(DATA_FOLDER);
             if(resourceFolder.listFiles() == null) {
@@ -77,7 +77,7 @@ public class TestFilesGenerator {
         return outFile;
     }
 
-    private List<Article> prepareArticles(int size) {
+    private static List<Article> prepareArticles(int size) {
         List<Article> articles = new ArrayList<>(size);
         Faker faker = new Faker();
         for (int i = 0; i < size; i++) {
