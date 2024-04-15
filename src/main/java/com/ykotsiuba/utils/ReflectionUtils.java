@@ -3,6 +3,7 @@ package com.ykotsiuba.utils;
 import com.ykotsiuba.entity.Article;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public class ReflectionUtils {
 
@@ -15,5 +16,10 @@ public class ReflectionUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static boolean contains (String fieldName) {
+        Field[] fields = Article.class.getDeclaredFields();
+        return Arrays.stream(fields).anyMatch(field -> field.getName().equals(fieldName));
     }
 }
