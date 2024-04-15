@@ -13,6 +13,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import static com.ykotsiuba.utils.FileSystemUtils.getJsonFiles;
+
 public class ArticleReaderImpl implements ArticleReader {
 
     private final ConcurrentParameterMap parameterMap;
@@ -25,7 +27,7 @@ public class ArticleReaderImpl implements ArticleReader {
     }
 
     public List<Runnable> read() {
-        List<String> jsonFiles = FileSystemUtils.getJsonFiles(parameters.getFolderPath());
+        List<String> jsonFiles = getJsonFiles(parameters.getFolderPath());
         return jsonFiles.stream()
                 .map(file -> createReadTask(file))
                 .toList();
