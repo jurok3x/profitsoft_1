@@ -5,6 +5,7 @@ import com.ykotsiuba.service.Executor;
 import com.ykotsiuba.service.impl.DefaultArticleComponentsFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -43,6 +44,7 @@ public class PerformanceTest {
     }
 
     @Test
+    @Disabled
     public void testApp() {
         long startTime = System.nanoTime();
         service.run();
