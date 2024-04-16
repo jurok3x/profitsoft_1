@@ -12,7 +12,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 class ExecutorImplTest {
-    public static final int TASK_COUNT = 5;
+    private static final int TASK_COUNT = 5;
 
     private Executor executor;
 
