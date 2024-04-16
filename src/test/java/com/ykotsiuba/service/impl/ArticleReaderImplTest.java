@@ -16,23 +16,26 @@ import static com.ykotsiuba.configuration.TestFilesGenerator.generateMultipleRan
 import static com.ykotsiuba.utils.FileSystemUtils.getJsonFiles;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 class ArticleReaderImplTest {
 
     private static final String PATH = "src/test/resources/data";
 
-    private static final String NAME = "year";
-
     private static final int FILES_COUNT = 10;
 
     private ArticleReader reader;
 
+    private RuntimeParameters parameters;
+
+    private ConcurrentParameterMap map;
+
     @BeforeEach
     void setUp() {
-        String[] args = new String[]{PATH, NAME};
-        ArticleComponentsFactory factory = DefaultArticleComponentsFactory.getInstance(args);
-        reader = factory.create(ArticleReader.class);
+        parameters = mock(RuntimeParameters.class);
+        map = mock(ConcurrentParameterMap.class);
+        reader = new ArticleReaderImpl(map, parameters);
         generateMultipleRandomJson(1, FILES_COUNT);
     }
 
@@ -43,6 +46,8 @@ class ArticleReaderImplTest {
 
     @Test
     public void testPrepareReadTasks() {
+        when(parameters.getFolderPath()).thenReturn(PATH);
+
         List<Runnable> runnableList = reader.read();
         assertEquals(FILES_COUNT, runnableList.size());
     }

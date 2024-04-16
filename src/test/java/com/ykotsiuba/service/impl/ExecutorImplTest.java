@@ -16,10 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ExecutorImplTest {
-
-    private static final String PATH = "src/test/resources/data";
-
-    private static final String NAME = "year";
     public static final int TASK_COUNT = 5;
 
     private Executor executor;

@@ -56,4 +56,10 @@ class DefaultArticleComponentsFactoryTest {
         assertNotNull(map);
     }
 
+    @Test
+    void nullTest() {
+        String string = factory.create(String.class);
+        assertNull(string);
+    }
+
 }

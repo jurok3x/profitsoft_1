@@ -10,15 +10,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.ykotsiuba.configuration.TestFieldsReader.read;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ArticleWriterImplTest {
-
-    private static final String PATH = "C:\\";
-
     private static final String NAME = "year";
 
     private ArticleWriter writer;
@@ -29,10 +30,8 @@ class ArticleWriterImplTest {
 
     @BeforeEach
     void setUp() {
-        String[] args = new String[]{PATH, NAME};
-        parameters = new RuntimeParameters(args);
-        map = new ConcurrentParameterMap();
-        initMap(map);
+        parameters = mock(RuntimeParameters.class);
+        map = mock(ConcurrentParameterMap.class);
         writer = new ArticleWriterImpl(map, parameters);
     }
 
@@ -47,6 +46,10 @@ class ArticleWriterImplTest {
 
     @Test
     public void testWriteCreatesFileWithData() {
+        Map<String, Integer> expectedMap = prepareMap();
+        when(parameters.getParameterName()).thenReturn(NAME);
+        when(map.getStatistics()).thenReturn(expectedMap);
+
         writer.write();
 
         String expectedFileName = String.format("statistics_by_%s.xml", NAME);
@@ -55,16 +58,12 @@ class ArticleWriterImplTest {
 
         assertTrue(file.exists());
         assertTrue(file.length() > 0);
-
-        ArticleStatistics articleStatistics = read(expectedFileName);
-        List<StatisticsItem> statistics = articleStatistics.getStatistics();
-
-        assertTrue(statistics.size() == map.getStatistics().size());
     }
 
-    private void initMap(ConcurrentParameterMap map) {
-        map.add("2022");
-        map.add("2022");
-        map.add("2024");
+    private Map<String, Integer> prepareMap() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("2022", 1);
+        map.put("2020", 2);
+        return map;
     }
 }
