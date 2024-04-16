@@ -1,6 +1,5 @@
 package com.ykotsiuba.service.impl;
 
-import com.ykotsiuba.service.ArticleComponentsFactory;
 import com.ykotsiuba.service.ArticleReader;
 import com.ykotsiuba.service.ArticleWriter;
 import com.ykotsiuba.service.Executor;
@@ -8,11 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static com.ykotsiuba.configuration.TestFilesGenerator.generateMultipleRandomJson;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ExecutorImplTest {

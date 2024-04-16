@@ -1,7 +1,6 @@
 package com.ykotsiuba.service.impl;
 
 import com.ykotsiuba.entity.ConcurrentParameterMap;
-import com.ykotsiuba.entity.RuntimeParameters;
 import com.ykotsiuba.service.ArticleComponentsFactory;
 import com.ykotsiuba.service.ArticleReader;
 import com.ykotsiuba.service.ArticleWriter;

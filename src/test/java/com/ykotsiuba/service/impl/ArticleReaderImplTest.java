@@ -1,9 +1,7 @@
 package com.ykotsiuba.service.impl;
 
-import com.ykotsiuba.configuration.TestFilesGenerator;
 import com.ykotsiuba.entity.ConcurrentParameterMap;
 import com.ykotsiuba.entity.RuntimeParameters;
-import com.ykotsiuba.service.ArticleComponentsFactory;
 import com.ykotsiuba.service.ArticleReader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,11 +11,9 @@ import java.util.List;
 
 import static com.ykotsiuba.configuration.TestFilesGenerator.clean;
 import static com.ykotsiuba.configuration.TestFilesGenerator.generateMultipleRandomJson;
-import static com.ykotsiuba.utils.FileSystemUtils.getJsonFiles;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ArticleReaderImplTest {
 

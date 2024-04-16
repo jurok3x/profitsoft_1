@@ -1,9 +1,7 @@
 package com.ykotsiuba.service.impl;
 
-import com.ykotsiuba.entity.ArticleStatistics;
 import com.ykotsiuba.entity.ConcurrentParameterMap;
 import com.ykotsiuba.entity.RuntimeParameters;
-import com.ykotsiuba.entity.StatisticsItem;
 import com.ykotsiuba.service.ArticleWriter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,10 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static com.ykotsiuba.configuration.TestFieldsReader.read;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
