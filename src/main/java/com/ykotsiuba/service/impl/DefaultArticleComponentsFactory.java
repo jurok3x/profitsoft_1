@@ -91,10 +91,11 @@ public class DefaultArticleComponentsFactory implements ArticleComponentsFactory
         return (T) executor;
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T createExecutorService(Class<T> clazz) {
         int threadNumbers = getThreadNumbers();
         ExecutorService executorService =  Executors.newFixedThreadPool(threadNumbers);
-        System.out.println(String.format("Prepared executor with %d threads...", threadNumbers));
+        System.out.printf("Prepared executor with %d threads...%n", threadNumbers);
         CONTEXT.put(clazz, executorService);
         return (T) executorService;
     }

@@ -25,7 +25,7 @@ public class PerformanceTest {
 
     @BeforeEach
     void setUp() {
-        System.out.println(String.format("Preparing %d json files with %d objects...", FILES_COUNT, OBJECTS_COUNT));
+        System.out.printf("Preparing %d json files with %d objects...%n", FILES_COUNT, OBJECTS_COUNT);
         generateMultipleRandomJson(OBJECTS_COUNT, FILES_COUNT);
         String[] args = {PATH, NAME};
         ArticleComponentsFactory factory = DefaultArticleComponentsFactory.getInstance(args);
