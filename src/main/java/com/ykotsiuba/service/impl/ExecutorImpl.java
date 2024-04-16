@@ -7,23 +7,23 @@ import com.ykotsiuba.service.Executor;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ExecutorImpl implements Executor {
-
     private final ExecutorService executorService;
 
     private final ArticleReader reader;
 
     private final ArticleWriter writer;
 
-    public ExecutorImpl(ArticleReader reader, ArticleWriter writer) {
+    public ExecutorImpl(ArticleReader reader, ArticleWriter writer, ExecutorService executorService) {
         this.reader = reader;
         this.writer = writer;
-        this.executorService = Executors.newFixedThreadPool(4);
+        this.executorService = executorService;
     }
 
     public void run() {
+        System.out.println("Execution started...");
+
         List<Runnable> readTasks = reader.read();
 
         CompletableFuture<?>[] futures = readTasks.stream()
@@ -36,6 +36,7 @@ public class ExecutorImpl implements Executor {
 
         writer.write();
 
+        System.out.println("Execution finished.");
         executorService.shutdown();
     }
 }

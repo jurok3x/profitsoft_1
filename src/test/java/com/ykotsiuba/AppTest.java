@@ -10,6 +10,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
 import static com.ykotsiuba.configuration.TestFieldsReader.read;
 import static com.ykotsiuba.configuration.TestFilesGenerator.clean;
 import static com.ykotsiuba.configuration.TestFilesGenerator.writeJson;
@@ -31,15 +33,20 @@ public class AppTest {
 
     @BeforeEach
     void setUp() {
+        writeJson(prepareArticles());
         String[] args = {PATH, NAME};
         ArticleComponentsFactory factory = DefaultArticleComponentsFactory.getInstance(args);
         service = factory.create(Executor.class);
-        writeJson(prepareArticles());
     }
 
     @AfterEach
     void tearDown() {
         clean();
+        String fileName = String.format("statistics_by_%s.xml", NAME);
+        File file = new File(fileName);
+        if(file.exists()) {
+            file.delete();
+        }
     }
 
     @Test

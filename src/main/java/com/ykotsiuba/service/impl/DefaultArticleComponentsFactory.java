@@ -7,23 +7,26 @@ import com.ykotsiuba.service.ArticleReader;
 import com.ykotsiuba.service.ArticleWriter;
 import com.ykotsiuba.service.Executor;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DefaultArticleComponentsFactory implements ArticleComponentsFactory {
     private final RuntimeParameters parameters;
-    private final Map<Class<?>, Object> context  = new HashMap<>();
-    private static DefaultArticleComponentsFactory instance;
+    private static final Map<Class<?>, Object> CONTEXT = new HashMap<>();
+    private static final String PROPERTY_FILE_PATH = "app.properties";
+    private static final String THREAD_NUMBER_PROPERTY_KEY = "threadNumber";
 
     private DefaultArticleComponentsFactory(String[] args) {
         parameters = new RuntimeParameters(args);
     }
 
     public static DefaultArticleComponentsFactory getInstance(String[] args) {
-        if(instance == null) {
-            instance = new DefaultArticleComponentsFactory(args);
-        }
-        return instance;
+        return new DefaultArticleComponentsFactory(args);
     }
 
     @Override
@@ -33,8 +36,8 @@ public class DefaultArticleComponentsFactory implements ArticleComponentsFactory
             return null;
         }
 
-        if(context.containsKey(clazz)) {
-            return (T) context.get(clazz);
+        if(CONTEXT.containsKey(clazz)) {
+            return (T) CONTEXT.get(clazz);
         }
 
         if(ConcurrentParameterMap.class.isAssignableFrom(clazz)) {
@@ -49,13 +52,16 @@ public class DefaultArticleComponentsFactory implements ArticleComponentsFactory
         if(Executor.class.isAssignableFrom(clazz)) {
             return createExecutor(clazz);
         }
+        if(ExecutorService.class.isAssignableFrom(clazz)) {
+            return createExecutorService(clazz);
+        }
         return null;
     }
 
     @SuppressWarnings("unchecked")
     private <T> T createConcurrentParameterMap(Class<T> clazz) {
         ConcurrentParameterMap map = new ConcurrentParameterMap();
-        context.put(clazz, map);
+        CONTEXT.put(clazz, map);
         return (T) map;
     }
 
@@ -63,7 +69,7 @@ public class DefaultArticleComponentsFactory implements ArticleComponentsFactory
     private <T> T createArticleWriter(Class<T> clazz) {
         ConcurrentParameterMap map = create(ConcurrentParameterMap.class);
         ArticleWriter writer = new ArticleWriterImpl(map, parameters);
-        context.put(clazz, writer);
+        CONTEXT.put(clazz, writer);
         return (T) writer;
     }
 
@@ -71,7 +77,7 @@ public class DefaultArticleComponentsFactory implements ArticleComponentsFactory
     private <T> T createArticleReader(Class<T> clazz) {
         ConcurrentParameterMap map = create(ConcurrentParameterMap.class);
         ArticleReader reader = new ArticleReaderImpl(map, parameters);
-        context.put(clazz, reader);
+        CONTEXT.put(clazz, reader);
         return (T) reader;
     }
 
@@ -79,9 +85,33 @@ public class DefaultArticleComponentsFactory implements ArticleComponentsFactory
     private <T> T createExecutor(Class<T> clazz) {
         ArticleReader reader = create(ArticleReader.class);
         ArticleWriter writer = create(ArticleWriter.class);
-        Executor executor = new ExecutorImpl(reader, writer);
-        context.put(clazz, executor);
+        ExecutorService executorService = create(ExecutorService.class);
+        Executor executor = new ExecutorImpl(reader, writer, executorService);
+        CONTEXT.put(clazz, executor);
         return (T) executor;
+    }
+
+    private <T> T createExecutorService(Class<T> clazz) {
+        int threadNumbers = getThreadNumbers();
+        ExecutorService executorService =  Executors.newFixedThreadPool(threadNumbers);
+        System.out.println(String.format("Prepared executor with %d threads...", threadNumbers));
+        CONTEXT.put(clazz, executorService);
+        return (T) executorService;
+    }
+
+    private static int getThreadNumbers() {
+        Properties properties = new Properties();
+        int threadNumbers = 1;
+        try (InputStream is = DefaultArticleComponentsFactory.class.getClassLoader().getResourceAsStream(PROPERTY_FILE_PATH)) {
+            properties.load(is);
+            String threadNumberString = properties.getProperty(THREAD_NUMBER_PROPERTY_KEY);
+            if (threadNumberString != null) {
+                threadNumbers = Integer.parseInt(threadNumberString);
+            }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return threadNumbers;
     }
 
 }

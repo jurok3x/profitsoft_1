@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.mockito.Mockito.*;
 
@@ -24,7 +26,8 @@ class ExecutorImplTest {
     void setUp() {
         writer = mock(ArticleWriter.class);
         reader = mock(ArticleReader.class);
-        executor = new ExecutorImpl(reader, writer);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executor = new ExecutorImpl(reader, writer, executorService);
     }
 
     @Test
