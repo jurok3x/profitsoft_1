@@ -56,9 +56,9 @@ public class TestFilesGenerator {
         }
     }
 
-    public static void generateMultipleRandomJson(int size, int count) {
-        for (int i = 0; i < count; i++) {
-            generateRandomJson(size);
+    public static void generateMultipleRandomJson(int objectsCount, int filesCount) {
+        for (int i = 0; i < filesCount; i++) {
+            generateRandomJson(objectsCount);
         }
     }
 
