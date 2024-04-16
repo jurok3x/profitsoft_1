@@ -7,11 +7,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.ykotsiuba.configuration.TestFilesGenerator.*;
+import java.io.File;
+
+import static com.ykotsiuba.configuration.TestFilesGenerator.clean;
+import static com.ykotsiuba.configuration.TestFilesGenerator.generateMultipleRandomJson;
 
 public class PerformanceTest {
-    private static final Integer ARTICLE_COUNT = 5;
-    private static final Integer YEAR = 2024;
+    private static final int OBJECTS_COUNT = 100;
+
+    private static final int FILES_COUNT = 200;
 
     private Executor service;
 
@@ -21,15 +25,21 @@ public class PerformanceTest {
 
     @BeforeEach
     void setUp() {
+        System.out.println(String.format("Preparing %d json files with %d objects...", FILES_COUNT, OBJECTS_COUNT));
+        generateMultipleRandomJson(OBJECTS_COUNT, FILES_COUNT);
         String[] args = {PATH, NAME};
         ArticleComponentsFactory factory = DefaultArticleComponentsFactory.getInstance(args);
         service = factory.create(Executor.class);
-        generateMultipleRandomJson(100, 200);
     }
 
     @AfterEach
     void tearDown() {
         clean();
+        String fileName = String.format("statistics_by_%s.xml", NAME);
+        File file = new File(fileName);
+        if(file.exists()) {
+            file.delete();
+        }
     }
 
     @Test
