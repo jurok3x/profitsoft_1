@@ -6,12 +6,13 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.ykotsiuba.entity.ConcurrentParameterMap;
 import com.ykotsiuba.entity.RuntimeParameters;
 import com.ykotsiuba.service.ArticleReader;
-import com.ykotsiuba.utils.FileSystemUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+
+import static com.ykotsiuba.utils.FileSystemUtils.getJsonFiles;
 
 public class ArticleReaderImpl implements ArticleReader {
 
@@ -25,7 +26,7 @@ public class ArticleReaderImpl implements ArticleReader {
     }
 
     public List<Runnable> read() {
-        List<String> jsonFiles = FileSystemUtils.getJsonFiles(parameters.getFolderPath());
+        List<String> jsonFiles = getJsonFiles(parameters.getFolderPath());
         return jsonFiles.stream()
                 .map(file -> createReadTask(file))
                 .toList();
