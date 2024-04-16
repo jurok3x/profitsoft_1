@@ -19,6 +19,7 @@ public class TestFilesGenerator {
     private static final ObjectMapper DEFAULT_MAPPER;
 
     static {
+        createFolderIfNotExists(DATA_FOLDER);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL.NON_NULL);
@@ -38,6 +39,13 @@ public class TestFilesGenerator {
         }
     }
 
+    private static void createFolderIfNotExists(String folderPath) {
+        File folder = new File(folderPath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+    }
+
     public static void generateRandomJson(int size) {
         try {
             List<Article> articles = prepareArticles(size);
@@ -48,9 +56,9 @@ public class TestFilesGenerator {
         }
     }
 
-    public static void generateMultipleRandomJson(int size, int count) {
-        for (int i = 0; i < count; i++) {
-            generateRandomJson(size);
+    public static void generateMultipleRandomJson(int objectsCount, int filesCount) {
+        for (int i = 0; i < filesCount; i++) {
+            generateRandomJson(objectsCount);
         }
     }
 
