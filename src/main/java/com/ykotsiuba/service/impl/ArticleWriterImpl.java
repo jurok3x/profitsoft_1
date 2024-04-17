@@ -10,6 +10,7 @@ import com.ykotsiuba.entity.StatisticsItem;
 import com.ykotsiuba.service.ArticleWriter;
 
 import java.io.File;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class ArticleWriterImpl implements ArticleWriter {
      */
     public void write() {
         String name = String.format("statistics_by_%s.xml", parameters.getParameterName());
-        Set<StatisticsItem> statisticsItems = mapStatistics();
+        List<StatisticsItem> statisticsItems = mapStatistics();
         ArticleStatistics statistics = new ArticleStatistics();
         statistics.setStatistics(statisticsItems);
         writeXML(statistics, name);
@@ -65,7 +66,7 @@ public class ArticleWriterImpl implements ArticleWriter {
      *
      * @return A list of StatisticsItem objects representing article statistics.
      */
-    private Set<StatisticsItem> mapStatistics() {
+    private List<StatisticsItem> mapStatistics() {
         return parameterMap.getStatistics()
                 .entrySet()
                 .stream()
@@ -73,6 +74,7 @@ public class ArticleWriterImpl implements ArticleWriter {
                         .value(entry.getKey())
                         .count(entry.getValue())
                         .build())
-                .collect(Collectors.toCollection(TreeSet::new));
+                .sorted()
+                .toList();
     }
 }

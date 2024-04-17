@@ -70,7 +70,7 @@ public class AppTest {
         for (int i = 0; i < ARTICLE_COUNT; i++) {
             articles[i] =  Article.builder()
                     .title("Title")
-                    .author("John Doe")
+                    .authors("John Doe")
                     .year(YEAR)
                     .journal("Applied Physics")
                     .field("Physics")

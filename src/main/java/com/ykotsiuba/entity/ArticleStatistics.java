@@ -7,8 +7,6 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Data
 @JacksonXmlRootElement(localName = "statistics")
@@ -16,10 +14,10 @@ public class ArticleStatistics {
 
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "item")
-    private Set<StatisticsItem> statistics;
+    private List<StatisticsItem> statistics;
 
     public ArticleStatistics() {
-        this.statistics = new TreeSet<>();
+        this.statistics = new ArrayList<>();
     }
 
     public void add(StatisticsItem item) {
