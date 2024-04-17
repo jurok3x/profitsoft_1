@@ -60,7 +60,7 @@ public class AppTest {
         assertNotNull(statistics);
         assertFalse(statistics.getStatistics().isEmpty());
 
-        StatisticsItem item = statistics.getStatistics().get(0);
+        StatisticsItem item = statistics.getStatistics().iterator().next();
         assertEquals(ARTICLE_COUNT, item.getCount());
         assertEquals(YEAR.toString(), item.getValue());
     }

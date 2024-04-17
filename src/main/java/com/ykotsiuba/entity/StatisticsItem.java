@@ -12,9 +12,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StatisticsItem {
+public class StatisticsItem implements Comparable<StatisticsItem> {
     @JacksonXmlElementWrapper(localName = "value")
     private String value;
     @JacksonXmlElementWrapper(localName = "count")
     private Integer count;
+
+    @Override
+    public int compareTo(StatisticsItem o) {
+        return o.getCount() - this.count;
+    }
 }
