@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * The ExecutorImpl class implements the Executor interface
+ * and provides functionality to execute tasks related to article processing.
+ */
 public class ExecutorImpl implements Executor {
     private final ExecutorService executorService;
 
@@ -21,6 +25,12 @@ public class ExecutorImpl implements Executor {
         this.executorService = executorService;
     }
 
+    /**
+     * Executes tasks related to article processing.
+     * This method initiates reading tasks from the article reader, executes them asynchronously,
+     * and then performs article writing once all reading tasks are completed.
+     * Additionally, it shuts down the executor service after completion.
+     */
     public void run() {
         System.out.println("Execution started...");
 
