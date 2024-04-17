@@ -75,9 +75,20 @@ public class ArticleReaderImpl implements ArticleReader {
             if (parameter.equals(fieldname)) {
                 jParser.nextToken();
                 String parsedName = jParser.getText();
-                parameterMap.add(parsedName);
+                addParameter(parsedName);
             }
         }
         jParser.close();
+    }
+
+    private void addParameter(String parsedName) {
+        if (parsedName.contains(",")) {
+            String[] names = parsedName.split("\\s*,\\s*");
+            for (String name : names) {
+                parameterMap.add(name.trim());
+            }
+        } else {
+            parameterMap.add(parsedName);
+        }
     }
 }

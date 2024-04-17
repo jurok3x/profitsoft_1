@@ -117,7 +117,7 @@ public class TestFilesGenerator {
             articles.add(
                     Article.builder()
                             .title(faker.lorem().sentence())
-                            .author(faker.name().fullName())
+                            .authors(prepareAuthors(faker))
                             .year(faker.number().numberBetween(START_YEAR, END_YEAR))
                             .journal(faker.book().publisher())
                             .field(faker.regexify(prepareFields()))
@@ -125,6 +125,18 @@ public class TestFilesGenerator {
             );
         };
         return articles;
+    }
+
+    private static String prepareAuthors(Faker faker) {
+        int size = faker.random().nextInt(1, 4);
+        StringBuilder authors = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            authors.append(faker.name().fullName());
+            if (i < size - 1) {
+                authors.append(", ");
+            }
+        }
+        return authors.toString();
     }
 
     private static String prepareFields() {
