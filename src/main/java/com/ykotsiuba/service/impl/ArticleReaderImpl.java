@@ -14,6 +14,10 @@ import java.util.List;
 
 import static com.ykotsiuba.utils.FileSystemUtils.getJsonFiles;
 
+/**
+ * The ArticleReaderImpl class implements the ArticleReader interface
+ * and provides functionality to read article data from JSON files.
+ */
 public class ArticleReaderImpl implements ArticleReader {
 
     private final ConcurrentParameterMap parameterMap;
@@ -25,6 +29,13 @@ public class ArticleReaderImpl implements ArticleReader {
         this.parameters = parameters;
     }
 
+    /**
+     * Reads article data from JSON files in the specified folder path.
+     * Each JSON file is processed asynchronously, and a list of Runnables representing
+     * tasks to process the read article data is returned.
+     *
+     * @return A list of Runnables representing tasks to process the read article data.
+     */
     public List<Runnable> read() {
         List<String> jsonFiles = getJsonFiles(parameters.getFolderPath());
         return jsonFiles.stream()
@@ -36,6 +47,11 @@ public class ArticleReaderImpl implements ArticleReader {
         return () -> readJsonFile(filePath);
     }
 
+    /**
+     * Reads the contents of a JSON file and updates the parameter map with the extracted data.
+     *
+     * @param fileName The name of the JSON file to read.
+     */
     private void readJsonFile(String fileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             JsonFactory jFactory = new JsonFactory();
@@ -46,6 +62,12 @@ public class ArticleReaderImpl implements ArticleReader {
         }
     }
 
+    /**
+     * Reads a JSON array from the provided JSON parser and updates the parameter map with the extracted data.
+     *
+     * @param jParser The JSON parser.
+     * @throws IOException If an I/O error occurs during JSON parsing.
+     */
     private void readJsonList(JsonParser jParser) throws IOException {
         while (jParser.nextToken() != JsonToken.END_ARRAY) {
             String fieldname = jParser.getCurrentName();

@@ -29,6 +29,11 @@ public class TestFilesGenerator {
     private static final int START_YEAR = 1999;
     private static final int END_YEAR = 2024;
 
+    /**
+     * Writes the provided articles to a JSON file.
+     *
+     * @param articles The articles to write to the JSON file.
+     */
     public static void writeJson(Article ...articles) {
         try {
             List<Article> articlesList = Arrays.stream(articles).toList();
@@ -46,6 +51,11 @@ public class TestFilesGenerator {
         }
     }
 
+    /**
+     * Generates a random JSON file containing the specified number of articles.
+     *
+     * @param size The number of articles to generate.
+     */
     public static void generateRandomJson(int size) {
         try {
             List<Article> articles = prepareArticles(size);
@@ -56,12 +66,21 @@ public class TestFilesGenerator {
         }
     }
 
+    /**
+     * Generates multiple random JSON files, each containing the specified number of articles.
+     *
+     * @param objectsCount The number of articles to generate in each file.
+     * @param filesCount   The number of files to generate.
+     */
     public static void generateMultipleRandomJson(int objectsCount, int filesCount) {
         for (int i = 0; i < filesCount; i++) {
             generateRandomJson(objectsCount);
         }
     }
 
+    /**
+     * Deletes all JSON files in the test data folder.
+     */
     public static void clean() {
         try {
             File resourceFolder = new File(DATA_FOLDER);
@@ -85,6 +104,12 @@ public class TestFilesGenerator {
         return outFile;
     }
 
+    /**
+     * Prepares a list of articles with random data.
+     *
+     * @param size The number of articles to prepare.
+     * @return The list of prepared articles.
+     */
     private static List<Article> prepareArticles(int size) {
         List<Article> articles = new ArrayList<>(size);
         Faker faker = new Faker();

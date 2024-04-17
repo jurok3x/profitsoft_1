@@ -15,6 +15,11 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The DefaultArticleComponentsFactory class implements the ArticleComponentsFactory interface
+ * and provides default implementations for creating various components related to article processing.
+ * Uses {@link HashMap} to store all instances.
+ */
 public class DefaultArticleComponentsFactory implements ArticleComponentsFactory {
     private final RuntimeParameters parameters;
     private static final Map<Class<?>, Object> CONTEXT = new HashMap<>();
@@ -100,6 +105,11 @@ public class DefaultArticleComponentsFactory implements ArticleComponentsFactory
         return (T) executorService;
     }
 
+    /**
+     * Retrieves the number of threads specified in the properties file.
+     *
+     * @return The number of threads, defaults to 1 if not specified or if an error occurs.
+     */
     private static int getThreadNumbers() {
         Properties properties = new Properties();
         int threadNumbers = 1;
@@ -109,8 +119,8 @@ public class DefaultArticleComponentsFactory implements ArticleComponentsFactory
             if (threadNumberString != null) {
                 threadNumbers = Integer.parseInt(threadNumberString);
             }
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
+        } catch (NullPointerException | IOException | NumberFormatException e) {
+            System.out.println("Error reading properties file. Running with single thread.");
         }
         return threadNumbers;
     }
