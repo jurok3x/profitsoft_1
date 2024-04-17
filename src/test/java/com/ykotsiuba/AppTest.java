@@ -60,7 +60,7 @@ public class AppTest {
         assertNotNull(statistics);
         assertFalse(statistics.getStatistics().isEmpty());
 
-        StatisticsItem item = statistics.getStatistics().get(0);
+        StatisticsItem item = statistics.getStatistics().iterator().next();
         assertEquals(ARTICLE_COUNT, item.getCount());
         assertEquals(YEAR.toString(), item.getValue());
     }
@@ -70,7 +70,7 @@ public class AppTest {
         for (int i = 0; i < ARTICLE_COUNT; i++) {
             articles[i] =  Article.builder()
                     .title("Title")
-                    .author("John Doe")
+                    .authors("John Doe")
                     .year(YEAR)
                     .journal("Applied Physics")
                     .field("Physics")

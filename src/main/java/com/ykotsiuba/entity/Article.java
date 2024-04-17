@@ -11,7 +11,7 @@ public class Article {
 
     private String title;
 
-    private String author;
+    private String authors;
 
     private String journal;
 
