@@ -11,9 +11,6 @@ import com.ykotsiuba.service.ArticleWriter;
 
 import java.io.File;
 import java.util.List;
-import java.util.TreeSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * The ArticleWriterImpl class implements the ArticleWriter interface
