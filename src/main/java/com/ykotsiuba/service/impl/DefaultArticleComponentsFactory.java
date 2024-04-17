@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 public class DefaultArticleComponentsFactory implements ArticleComponentsFactory {
     private final RuntimeParameters parameters;
     private static final Map<Class<?>, Object> CONTEXT = new HashMap<>();
-    private static final String PROPERTY_FILE_PATH = "/app.properties";
+    private static final String PROPERTY_FILE_PATH = "app.properties";
     private static final String THREAD_NUMBER_PROPERTY_KEY = "threadNumber";
 
     private DefaultArticleComponentsFactory(String[] args) {

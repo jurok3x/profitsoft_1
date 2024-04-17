@@ -13,6 +13,11 @@ import java.io.File;
 import static com.ykotsiuba.configuration.TestFilesGenerator.clean;
 import static com.ykotsiuba.configuration.TestFilesGenerator.generateMultipleRandomJson;
 
+/**
+ * Use this test to evaluate performance of this app.
+ * Specify number of files and number of JSON objects in single file.
+ * You can also change threadNumber in test app.properies.
+ */
 public class PerformanceTest {
     private static final int OBJECTS_COUNT = 100;
 
