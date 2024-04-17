@@ -26,6 +26,18 @@ public class ExecutorImpl implements Executor {
 
         List<Runnable> readTasks = reader.read();
 
+        if(readTasks.isEmpty()) {
+            System.out.println("No json files found.");
+            return;
+        }
+
+        execute(readTasks);
+
+        System.out.println("Execution finished.");
+        executorService.shutdown();
+    }
+
+    private void execute(List<Runnable> readTasks) {
         CompletableFuture<?>[] futures = readTasks.stream()
                 .map(task -> CompletableFuture.runAsync(task, executorService))
                 .toArray(CompletableFuture[]::new);
@@ -35,8 +47,5 @@ public class ExecutorImpl implements Executor {
         allOf.join();
 
         writer.write();
-
-        System.out.println("Execution finished.");
-        executorService.shutdown();
     }
 }
